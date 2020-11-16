@@ -10,10 +10,10 @@ if test -f prevdata/index.yaml
 then
     echo 'Merging with previous data'
     mv prevdata/*.tgz build-heapster/ || true
-    /tmp/helm/helm repo index build/ --merge prevdata/index.yaml --url http://helm-repo.sphera.tools.s3-website-us-east-1.amazonaws.com/heapster
+    /tmp/helm/helm repo index build-heapster/ --merge prevdata/index.yaml --url http://helm-repo.sphera.tools.s3-website-us-east-1.amazonaws.com/heapster
 else
     echo 'No previous charts to merge'
-    /tmp/helm/helm repo index build/ --url http://helm-repo.sphera.tools.s3-website-us-east-1.amazonaws.com/heapster
+    /tmp/helm/helm repo index build-heapster/ --url http://helm-repo.sphera.tools.s3-website-us-east-1.amazonaws.com/heapster
 fi
 rm -rf prevdata
 rm -rf charts
