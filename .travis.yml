@@ -17,9 +17,9 @@ before_install:
   - chmod u+x /tmp/helm/helm
 
 script:
-  - chmod +x build-chart.sh && ./build-chart-autoscaler.sh
+  - chmod +x build-chart-autoscaler.sh && ./build-chart-autoscaler.sh
   
-  - chmod +x build-heapster.sh && ./build-chart-heapster.sh
+  - chmod +x build-chart-heapster.sh && ./build-chart-heapster.sh
   
 deploy:
   
