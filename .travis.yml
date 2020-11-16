@@ -30,4 +30,4 @@ deploy:
   skip_cleanup: true
   region: "${AWS_DEFAULT_REGION}"
   local_dir: build
-  upload-dir: cluster-autoscaller
+  upload-dir: cluster-autoscaler
