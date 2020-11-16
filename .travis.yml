@@ -22,8 +22,7 @@ script:
   - chmod +x build-heapster.sh && ./build-chart-heapster.sh
   
 deploy:
-  on:
-    branch: main
+  
   - provider: s3
     access_key_id: "${AWS_ACCESS_KEY_ID}"
     secret_access_key: "${AWS_SECRET_ACCESS_KEY}"
@@ -32,6 +31,8 @@ deploy:
     region: "${AWS_DEFAULT_REGION}"
     local_dir: build-autoscaler
     upload-dir: cluster-autoscaler
+    on:
+      branch: main
   - provider: s3
     access_key_id: "${AWS_ACCESS_KEY_ID}"
     secret_access_key: "${AWS_SECRET_ACCESS_KEY}"
@@ -40,3 +41,5 @@ deploy:
     region: "${AWS_DEFAULT_REGION}"
     local_dir: build-heapster
     upload-dir: heapster
+    on:
+      branch: main
