@@ -2,7 +2,7 @@ mkdir build-ingress
 mkdir prevdata
 
 git clone https://github.com/helm/charts.git
-aws s3 cp s3://helm-repo.sphera.tools/heapster prevdata --recursive || true
+aws s3 cp s3://helm-repo.sphera.tools/aws-alb-ingress-controller prevdata --recursive || true
 cd charts/incubator/aws-alb-ingress-controller/ && /tmp/helm/helm package ./ && cd -
 mv charts/incubator/aws-alb-ingress-controller/*.tgz build-ingress/
 

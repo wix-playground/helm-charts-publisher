@@ -20,6 +20,7 @@ script:
   - chmod +x build-chart-autoscaler.sh && ./build-chart-autoscaler.sh  
   - chmod +x build-chart-heapster.sh && ./build-chart-heapster.sh
   - chmod +x build-chart-ingress.sh && ./build-chart-ingress.sh
+  - chmod +x build-chart-kube2iam.sh && ./build-chart-kube2iam.sh
 
 deploy:
   
@@ -53,3 +54,14 @@ deploy:
     upload-dir: aws-alb-ingress-controller
     on:
       branch: main
+  - provider: s3
+    access_key_id: "${AWS_ACCESS_KEY_ID}"
+    secret_access_key: "${AWS_SECRET_ACCESS_KEY}"
+    bucket: "helm-repo.sphera.tools"
+    skip_cleanup: true
+    region: "${AWS_DEFAULT_REGION}"
+    local_dir: build-kube2iam
+    upload-dir: kube2iam
+    on:
+      branch: main
+      
