@@ -92,5 +92,16 @@ deploy:
     upload-dir: kubernetes-dashboard-proxy
     on:
       branch: main
+  - provider: s3
+    access_key_id: "${AWS_ACCESS_KEY_ID}"
+    secret_access_key: "${AWS_SECRET_ACCESS_KEY}"
+    bucket: "helm-repo.sphera.tools"
+    skip_cleanup: true
+    region: "${AWS_DEFAULT_REGION}"
+    local_dir: build-metrics-server
+    upload-dir: metrics-server
+    on:
+      branch: main
+  
 
    

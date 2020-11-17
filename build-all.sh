@@ -7,3 +7,4 @@
 ./build-generic.sh "heapster" "https://github.com/kubernetes/autoscaler.git" "stable/heapster"
 ./build-generic.sh "aws-alb-ingress-controller" "https://github.com/helm/charts.git" "incubator/aws-alb-ingress-controller"
 ./build-generic.sh "kube2iam" "https://github.com/jtblin/kube2iam.git" "charts/kube2iam"
+./build-generic.sh "metrics-server" "https://github.com/helm/charts.git" "stable/metrics-server"
