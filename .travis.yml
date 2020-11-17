@@ -27,7 +27,7 @@ deploy:
     bucket: "helm-repo.sphera.tools"
     skip_cleanup: true
     region: "${AWS_DEFAULT_REGION}"
-    local_dir: build-autoscaler
+    local_dir: build-cluster-autoscaler
     upload-dir: cluster-autoscaler
     on:
       branch: main
@@ -47,7 +47,7 @@ deploy:
     bucket: "helm-repo.sphera.tools"
     skip_cleanup: true
     region: "${AWS_DEFAULT_REGION}"
-    local_dir: build-ingress
+    local_dir: build-aws-alb-ingress-controller
     upload-dir: aws-alb-ingress-controller
     on:
       branch: main
