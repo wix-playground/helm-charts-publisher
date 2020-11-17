@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "kubernetes-dashboard-proxy.fullname" . }}
+  labels:
+    app: {{ template "kubernetes-dashboard-proxy.name" . }}
+    chart: {{ template "kubernetes-dashboard-proxy.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "kubernetes-dashboard-proxy.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "kubernetes-dashboard-proxy.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: PROXY_LISTEN
+              value: 0.0.0.0:3000
+            - name: PROXY_DISCOVERY_URL
+              value: {{ .Values.proxy.oidc.discoveryURL | quote }}
+            - name: PROXY_CLIENT_ID
+              value: {{ .Values.proxy.oidc.clientID | quote }}
+            - name: PROXY_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "kubernetes-dashboard-proxy.fullname" . }}
+                  key: clientSecret
+            - name: PROXY_REDIRECTION_URL
+              value: {{ .Values.proxy.oidc.redirectURL | quote }}
+            - name: PROXY_ENABLE_REFRESH_TOKEN
+              value: "true"
+            - name: PROXY_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "kubernetes-dashboard-proxy.fullname" . }}
+                  key: cookieEncryptionKey
+            - name: PROXY_UPSTREAM_URL
+              value: {{ .Values.proxy.upstreamURL | quote }}
+            - name: PROXY_ENABLE_AUTHORIZATION_HEADER
+              value: {{ .Values.proxy.enableAuthorizationHeader | quote }}
+            - name: PROXY_ENABLE_AUTHORIZATION_COOKIES
+              value: {{ .Values.proxy.enableAuthorizationCookies | quote }}
+          args:
+            - "--resources=uri=/*"
+          {{- if .Values.proxy.oidc.scopes }}
+            - "--scopes={{ .Values.proxy.oidc.scopes }}"
+          {{- end }}
+          {{- with .Values.proxy.extraArgs }}
+{{ toYaml . | indent 12 }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              port: http
+              path: /oauth/health
+            initialDelaySeconds: 3
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              port: http
+              path: /oauth/health
+            initialDelaySeconds: 3
+            timeoutSeconds: 10
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
