@@ -1,0 +1,12 @@
+name: Nightly run build on Linux (Cronjob)
+on:
+  push:
+    branches: [main]
+jobs:
+  publish-helm-charts:   
+    runs-on: [self-hosted, linux, ARM64, helm-builder]
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - run: chmod +x build-all.sh && ./build-all.sh
+      - run: ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
