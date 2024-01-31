@@ -1,5 +1,5 @@
 #!/bin/bash
-
+ 
 ./build-generic.sh "kuberos" "https://github.com/helm/charts.git" "stable/kuberos"
 ./build-generic.sh "kubernetes-dashboard-proxy" "https://github.com/wix-playground/helm-charts-publisher.git" "charts/kubernetes-dashboard-proxy"
 ./build-generic.sh "cluster-autoscaler" "https://github.com/kubernetes/autoscaler.git" "charts/cluster-autoscaler-chart"
